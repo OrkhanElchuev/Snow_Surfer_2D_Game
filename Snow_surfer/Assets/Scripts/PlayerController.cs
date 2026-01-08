@@ -11,19 +11,19 @@ public class PlayerController : MonoBehaviour
     InputAction moveAction;
     Rigidbody2D myRigidBody2D;
     SurfaceEffector2D surfaceEffector2D;
+    ScoreManager scoreManager;
 
     Vector2 moveVector;
     bool canControlPlayer = true;
     float previousRotation;
     float totalRotation;
-    int flipAmount;
-
 
     void Start()
     {
         moveAction = InputSystem.actions.FindAction("Move");
         myRigidBody2D = GetComponent<Rigidbody2D>();
         surfaceEffector2D = FindFirstObjectByType<SurfaceEffector2D>();
+        scoreManager = FindFirstObjectByType<ScoreManager>();
     }
 
     void Update()
@@ -68,13 +68,11 @@ public class PlayerController : MonoBehaviour
 
         totalRotation += Mathf.DeltaAngle(previousRotation, currentRotation);
 
-        if (totalRotation > 345 || totalRotation < -345)
+        if (totalRotation > 335 || totalRotation < -335)
         {
-            flipAmount++;
             totalRotation = 0;
-            print(flipAmount);
+            scoreManager.AddScore(10);
         }
-
         previousRotation = currentRotation;
     }
 
