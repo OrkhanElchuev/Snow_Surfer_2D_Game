@@ -4,12 +4,16 @@ public class SnowTrail : MonoBehaviour
 {
     [SerializeField] ParticleSystem snowParticles;
 
+    int floorLayer;
+
+    void Awake()
+    {
+        floorLayer = LayerMask.NameToLayer("Floor");    
+    }
+
     void OnCollisionEnter2D(Collision2D collision)
     {
-        // layer 7, "Floor"
-        int layerIndex = LayerMask.NameToLayer("Floor");
-
-        if (collision.gameObject.layer == layerIndex)
+        if (collision.gameObject.layer == floorLayer)
         {
             snowParticles.Play();
         }
@@ -18,9 +22,7 @@ public class SnowTrail : MonoBehaviour
 
     void OnCollisionExit2D(Collision2D collision)
     {
-        int layerIndex = LayerMask.NameToLayer("Floor");
-
-        if (collision.gameObject.layer == layerIndex)
+        if (collision.gameObject.layer == floorLayer)
         {
             snowParticles.Stop();
         }
