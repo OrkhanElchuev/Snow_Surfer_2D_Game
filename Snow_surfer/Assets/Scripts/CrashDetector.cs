@@ -6,6 +6,13 @@ public class CrashDetector : MonoBehaviour
     [SerializeField] float delayAfterLosing = 1f;
     [SerializeField] ParticleSystem crashParticles;
 
+    PlayerController playerController;
+
+    void Start()
+    {
+        playerController = FindFirstObjectByType<PlayerController>();
+    }
+
     void OnTriggerEnter2D(Collider2D collision)
     {
         // layer 7, "Floor"
@@ -13,6 +20,7 @@ public class CrashDetector : MonoBehaviour
 
         if (collision.gameObject.layer == layerIndex)
         {
+            playerController.DisableControls();
             crashParticles.Play();
             Invoke("ReloadScene", delayAfterLosing);
         }
