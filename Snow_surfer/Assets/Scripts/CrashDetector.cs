@@ -3,6 +3,8 @@ using UnityEngine.SceneManagement;
 
 public class CrashDetector : MonoBehaviour
 {
+    [SerializeField] float delayAfterLosing = 1f;
+
     void OnTriggerEnter2D(Collider2D collision)
     {
         // layer 7, "Floor"
@@ -10,8 +12,13 @@ public class CrashDetector : MonoBehaviour
 
         if (collision.gameObject.layer == layerIndex)
         {
-            // 0 - Level 1 Scene
-            SceneManager.LoadScene(0);
+            Invoke("ReloadScene", delayAfterLosing);
         }
+    }
+
+    void ReloadScene()
+    {
+        // 0 - Level 1 Scene
+        SceneManager.LoadScene(0);
     }
 }
