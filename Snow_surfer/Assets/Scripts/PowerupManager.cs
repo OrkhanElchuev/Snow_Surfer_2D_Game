@@ -22,13 +22,16 @@ public class PowerupManager : MonoBehaviour
 
     void CountDownTimer()
     {
-        if(timeLeft > 0)
+        if (spriteRenderer.enabled == false)
         {
-            timeLeft -= Time.deltaTime;
-            
-            if(timeLeft <= 0)
+            if (timeLeft > 0)
             {
-                player.DeactivatePowerup(powerup);
+                timeLeft -= Time.deltaTime;
+            
+                if (timeLeft <= 0)
+                {
+                    player.DeactivatePowerup(powerup);
+                }
             }
         }
     }
