@@ -4,6 +4,7 @@ using UnityEngine.SceneManagement;
 public class CrashDetector : MonoBehaviour
 {
     [SerializeField] float delayAfterLosing = 1f;
+    [SerializeField] ParticleSystem crashParticles;
 
     void OnTriggerEnter2D(Collider2D collision)
     {
@@ -12,6 +13,7 @@ public class CrashDetector : MonoBehaviour
 
         if (collision.gameObject.layer == layerIndex)
         {
+            crashParticles.Play();
             Invoke("ReloadScene", delayAfterLosing);
         }
     }
