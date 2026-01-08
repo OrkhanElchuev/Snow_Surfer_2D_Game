@@ -7,6 +7,17 @@ public class CrashDetector : MonoBehaviour
     [SerializeField] ParticleSystem crashParticles;
 
     PlayerController playerController;
+    int floorLayer;
+
+    void Awake()
+    {
+        if (!playerController)
+        {
+            playerController = FindFirstObjectByType<PlayerController>();
+        }
+        
+        floorLayer = LayerMask.NameToLayer("Floor");
+    }
 
     void Start()
     {
@@ -15,14 +26,11 @@ public class CrashDetector : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D collision)
     {
-        // layer 7, "Floor"
-        int layerIndex = LayerMask.NameToLayer("Floor");
-
-        if (collision.gameObject.layer == layerIndex)
+        if (collision.gameObject.layer == floorLayer)
         {
             playerController.DisableControls();
             crashParticles.Play();
-            Invoke("ReloadScene", delayAfterLosing);
+            Invoke(nameof(ReloadScene), delayAfterLosing);
         }
     }
 

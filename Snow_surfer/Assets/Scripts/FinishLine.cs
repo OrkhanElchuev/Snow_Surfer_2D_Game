@@ -15,7 +15,7 @@ public class FinishLine : MonoBehaviour
         {   
             finishParticles.Play();
             // Delay
-            Invoke("ReloadScene", winDelayAmount);
+            Invoke(nameof(ReloadScene), winDelayAmount);
         }
     }
 

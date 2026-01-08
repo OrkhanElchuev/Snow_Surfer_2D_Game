@@ -3,31 +3,22 @@ using UnityEngine;
 public class CharSelectManager : MonoBehaviour
 {   
     [SerializeField] GameObject scoreCanvas;
-    [SerializeField] GameObject penguinSprite;
-    [SerializeField] GameObject sharkSprite;
-
 
     void Start()
     {
         Time.timeScale = 0;
     }
 
-    void BeginGame()
+    private void BeginGame()
     {
         Time.timeScale = 1f;
         scoreCanvas.SetActive(true);
         gameObject.SetActive(false);
     }
 
-    public void ChoosePenguin()
+    public void ChooseCharacter(GameObject characterSprite)
     {
-        penguinSprite.SetActive(true);
-        BeginGame();
-    }
-
-    public void ChooseShark()
-    {
-        sharkSprite.SetActive(true);
+        characterSprite.SetActive(true);
         BeginGame();
     }
 }
