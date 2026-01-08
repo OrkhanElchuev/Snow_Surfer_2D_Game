@@ -7,6 +7,12 @@ public class PowerupManager : MonoBehaviour
     PlayerController player;
     SpriteRenderer spriteRenderer;
     float timeLeft;
+    int playerLayer;
+
+    void Awake()
+    {
+        playerLayer = LayerMask.NameToLayer("Player");
+    }
 
     void Start()
     {
@@ -38,9 +44,7 @@ public class PowerupManager : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D collision)
     {
-        int layerIndex = LayerMask.NameToLayer("Player");
-
-        if (collision.gameObject.layer == layerIndex && spriteRenderer.enabled)
+        if (collision.gameObject.layer == playerLayer && spriteRenderer.enabled)
         {   
             spriteRenderer.enabled = false;
             player.ActivatePowerup(powerup);

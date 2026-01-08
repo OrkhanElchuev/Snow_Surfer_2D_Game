@@ -7,9 +7,22 @@ public class ScoreManager : MonoBehaviour
 
    int score = 0;
 
-   public void AddScore (int addScore)
+   void Awake()
+   {
+        if (!scoreText)
+        {
+            Debug.LogError("ScoreText not assigned", this);
+        }
+   }
+
+    public void AddScore (int addScore)
     {
         score += addScore;
-        scoreText.text = "Score: " + score;
+        UpdateScoreText();
+    }
+
+    void UpdateScoreText()
+    {
+        scoreText.text = $"Score: {score}";
     }
 }
