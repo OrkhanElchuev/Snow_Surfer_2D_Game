@@ -1,9 +1,11 @@
-using UnityEditorInternal;
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
+    const float flipThreshold = 330f;
+
     [SerializeField] float torqueAmount = 1f;
     [SerializeField] float baseSpeed = 15f;
     [SerializeField] float boostSpeed = 20f;
@@ -20,35 +22,32 @@ public class PlayerController : MonoBehaviour
     float totalRotation;
     int activePowerupCount;
 
-    void Start()
+    void Awake()
     {
-        moveAction = InputSystem.actions.FindAction("Move");
         myRigidBody2D = GetComponent<Rigidbody2D>();
         surfaceEffector2D = FindFirstObjectByType<SurfaceEffector2D>();
     }
 
+    void Start()
+    {
+        moveAction = InputSystem.actions.FindAction("Move");
+    }
+
     void Update()
     {
-        if (canControlPlayer)
-        {
-            RotatePlayer();
-            BoostPlayer();
-            CalculateFlips();
-        }
+        if (!canControlPlayer) return;
+        
+        RotatePlayer();
+        BoostPlayer();
+        CalculateFlips();
     }
 
     void RotatePlayer()
     {
         moveVector = moveAction.ReadValue<Vector2>();
-        
-        if (moveVector.x < 0)
-        {
-            myRigidBody2D.AddTorque(torqueAmount);
-        }
-        else if (moveVector.x > 0)
-        {
-            myRigidBody2D.AddTorque(-torqueAmount);
-        }
+
+        float rotationInput = moveVector.x;
+        myRigidBody2D.AddTorque(-rotationInput * torqueAmount);
     }
 
     void BoostPlayer()
@@ -69,7 +68,7 @@ public class PlayerController : MonoBehaviour
 
         totalRotation += Mathf.DeltaAngle(previousRotation, currentRotation);
 
-        if (totalRotation > 335 || totalRotation < -335)
+        if (Math.Abs(totalRotation) > flipThreshold)
         {
             totalRotation = 0;
             scoreManager.AddScore(10);
@@ -86,15 +85,17 @@ public class PlayerController : MonoBehaviour
     {
         powerupParticles.Play();
         activePowerupCount += 1;
-        
-        if (powerup.GetPowerupType() == "speed")
+
+        switch (powerup.GetPowerupType())
         {
-            baseSpeed += powerup.GetValueChange();
-            boostSpeed += powerup.GetValueChange();
-        }
-        else if (powerup.GetPowerupType() == "torque")
-        {
-            torqueAmount += powerup.GetValueChange();
+            case "speed":
+                baseSpeed += powerup.GetValueChange();
+                boostSpeed += powerup.GetValueChange();
+                break;
+
+            case "torque":
+                torqueAmount += powerup.GetValueChange();
+                break;
         }
     }
 
