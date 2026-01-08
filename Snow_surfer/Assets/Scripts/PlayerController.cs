@@ -80,4 +80,30 @@ public class PlayerController : MonoBehaviour
     {
         canControlPlayer = false;
     }
+
+    public void ActivatePowerup(PowerupScriptableObject powerup)
+    {
+        if (powerup.GetPowerupType() == "speed")
+        {
+            baseSpeed += powerup.GetValueChange();
+            boostSpeed += powerup.GetValueChange();
+        }
+        else if (powerup.GetPowerupType() == "torque")
+        {
+            torqueAmount += powerup.GetValueChange();
+        }
+    }
+
+    public void DeactivatePowerup(PowerupScriptableObject powerup)
+    {
+        if (powerup.GetPowerupType() == "speed")
+        {
+            baseSpeed -= powerup.GetValueChange();
+            boostSpeed -= powerup.GetValueChange();
+        }
+        else if (powerup.GetPowerupType() == "torque")
+        {
+            torqueAmount -= powerup.GetValueChange();
+        }
+    }
 }
